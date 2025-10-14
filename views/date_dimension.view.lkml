@@ -9,6 +9,7 @@ view: date_dimension {
     sql: ${TABLE}.DateKey ;;
   }
   dimension: date {
+    primary_key: yes
     type: date
     sql: ${date_key_date} ;;
   }
