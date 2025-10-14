@@ -2,6 +2,7 @@ view: employee_dimension {
   sql_table_name: `looker-training-475011.Employee_Performance_K.Employee_dimension` ;;
 
   dimension: employee_id {
+    primary_key: yes
     type: number
     sql: ${TABLE}.EmployeeID ;;
   }
