@@ -17,19 +17,19 @@ view: employee_fact {
     type: number
     sql: ${TABLE}.EmployeeID ;;
   }
-  dimension: hours_worked {
+  measure: hours_worked {
     type: number
     sql: ${TABLE}.HoursWorked ;;
   }
-  dimension: performance_score {
+  measure: performance_score {
     type: number
     sql: ${TABLE}.PerformanceScore ;;
   }
-  dimension: sales_amount {
+  measure: sales_amount {
     type: number
     sql: ${TABLE}.SalesAmount ;;
   }
-  dimension: tasks_completed {
+  measure: tasks_completed {
     type: number
     sql: ${TABLE}.TasksCompleted ;;
   }
