@@ -8,6 +8,10 @@ view: date_dimension {
     datatype: date
     sql: ${TABLE}.DateKey ;;
   }
+  dimension: date {
+    type: date
+    sql: ${date_key_date} ;;
+  }
   dimension: month {
     type: number
     sql: ${TABLE}.Month ;;
