@@ -6,6 +6,7 @@ view: department_dimension {
     sql: ${TABLE}.DepartmentHead ;;
   }
   dimension: department_id {
+    primary_key: yes
     type: number
     sql: ${TABLE}.DepartmentID ;;
   }
