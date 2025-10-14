@@ -13,3 +13,12 @@ datagroup: Employee_Performance_model_default_datagroup {
 }
 
 persist_with: Employee_Performance_model_default_datagroup
+label: "Employee Performance"
+
+explore: employee_fact {
+  join: date_dimension {
+    type: left_outer
+    sql_on: ${employee_fact.date_key_raw}=${date_dimension.date_key_raw} ;;
+    relationship: many_to_one
+  }
+}
