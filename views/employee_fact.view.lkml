@@ -13,6 +13,7 @@ view: employee_fact {
     sql: ${TABLE}.DepartmentID ;;
   }
   dimension: employee_id {
+    primary_key: yes
     type: number
     sql: ${TABLE}.EmployeeID ;;
   }
