@@ -21,4 +21,14 @@ explore: employee_fact {
     sql_on: ${employee_fact.date_key_raw}=${date_dimension.date_key_raw} ;;
     relationship: many_to_one
   }
+  join: employee_dimension {
+    type: left_outer
+    sql_on: ${employee_fact.employee_id}=${employee_dimension.employee_id};;
+    relationship: many_to_one
+  }
+  join: department_dimension {
+    type: left_outer
+    sql_on: ${employee_fact.department_id}=${department_dimension.department_id} ;;
+    relationship: many_to_one
+  }
 }
