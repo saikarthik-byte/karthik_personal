@@ -1,8 +1,16 @@
 view: employee_dimension {
-  sql_table_name: `looker-training-475011.Employee_Performance_K.Employee_dimension` ;;
+  sql_table_name: `looker-training-475011.Employee_Performance_K.employee dimension` ;;
 
+  dimension: city {
+    type: string
+    sql: ${TABLE}.City ;;
+  }
+  dimension: country {
+    type: string
+    map_layer_name: countries
+    sql: ${TABLE}.Country ;;
+  }
   dimension: employee_id {
-    primary_key: yes
     type: number
     sql: ${TABLE}.EmployeeID ;;
   }
@@ -24,6 +32,10 @@ view: employee_dimension {
   dimension: position {
     type: string
     sql: ${TABLE}.Position ;;
+  }
+  dimension: state {
+    type: string
+    sql: ${TABLE}.State ;;
   }
   measure: count {
     type: count
