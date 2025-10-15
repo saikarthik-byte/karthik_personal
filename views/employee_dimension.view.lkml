@@ -5,6 +5,10 @@ view: employee_dimension {
     type: string
     sql: ${TABLE}.City ;;
   }
+  dimension: state {
+    type: string
+    sql: ${TABLE}.State ;;
+  }
   dimension: country {
     type: string
     map_layer_name: countries
@@ -33,10 +37,7 @@ view: employee_dimension {
     type: string
     sql: ${TABLE}.Position ;;
   }
-  dimension: state {
-    type: string
-    sql: ${TABLE}.State ;;
-  }
+
   measure: count {
     type: count
     drill_fields: [employee_name]
