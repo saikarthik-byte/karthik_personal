@@ -13,7 +13,7 @@ datagroup: Employee_Performance_model_default_datagroup {
 }
 
 persist_with: Employee_Performance_model_default_datagroup
-label: "Employee Performance"
+label: "Employee Performance karthik"
 
 explore: employee_fact {
   join: date_dimension {
