@@ -1,21 +1,23 @@
 view: employee_dimension {
   sql_table_name: `looker-training-475011.Employee_Performance_K.employee dimension` ;;
 
-  dimension: city {
-    type: string
-    sql: ${TABLE}.City ;;
-  }
-  dimension: state {
-    type: string
-    sql: ${TABLE}.State ;;
-    drill_fields: [city,count]
-  }
   dimension: country {
     type: string
     map_layer_name: countries
     sql: ${TABLE}.Country ;;
-    drill_fields: [state,city,count]
+    drill_fields: [state]
   }
+
+  dimension: state {
+    type: string
+    sql: ${TABLE}.State ;;
+    drill_fields: [city]
+  }
+  dimension: city {
+    type: string
+    sql: ${TABLE}.City ;;
+  }
+
   dimension: employee_id {
     type: number
     sql: ${TABLE}.EmployeeID ;;
