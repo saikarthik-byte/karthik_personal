@@ -31,6 +31,7 @@ explore: employee_fact {
     sql_on: ${employee_fact.department_id}=${department_dimension.department_id} ;;
     relationship: many_to_one
   }
+  sql_always_where: {% if employee_dimension.country_param._parameter_value != "All" %} ${employee_dimension.country} = {% parameter employee_dimension.country_param %} {% endif %} ;;
 
 
 }

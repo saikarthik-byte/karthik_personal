@@ -1,5 +1,5 @@
 view: employee_dimension {
-  sql_table_name: `looker-training-475011.Employee_Performance_K.employee dimension` ;;
+  sql_table_name: `looker-training-475011.Employee_Performance_K.employee_dimension` ;;
 
   parameter: country_param {
     type: string
@@ -12,12 +12,6 @@ view: employee_dimension {
     default_value: "All"
   }
 
-  dimension: country_filtered {
-    type: string
-    map_layer_name: countries
-    sql: ${TABLE}.Country ;;
-  }
-
   dimension: country {
     type: string
     map_layer_name: countries
@@ -25,15 +19,13 @@ view: employee_dimension {
     drill_fields: [state, city]
   }
 
-  dimension: country_flag_image {
-    label: "Flag"
+  dimension: country_filtered {
     type: string
-    sql: ${country} ;;
-    html: |
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Flag_of_{{ value | replace: " ", "_" }}.svg/60px-Flag_of_{{ value | replace: " ", "_" }}.svg.png"
-           style="height: 25px; border: 1px solid #ccc; vertical-align: middle;"
-           alt="{{ rendered_value }} Flag">
-      ;;
+    sql: CASE
+           WHEN {% parameter country_param %} = 'All' THEN ${TABLE}.Country
+           ELSE {% parameter country_param %}
+         END ;;
+    map_layer_name: countries
   }
 
   dimension: state {
@@ -80,8 +72,4 @@ view: employee_dimension {
     type: count
     drill_fields: [employee_name]
   }
-}
-
-explore: employee_dimension {
-  sql_always_where: {% if country_param._parameter_value != "All" %} ${employee_dimension.country} = {% parameter country_param %} {% endif %} ;;
 }
