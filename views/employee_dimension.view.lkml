@@ -19,6 +19,7 @@ view: employee_dimension {
   }
 
   dimension: employee_id {
+    primary_key: yes
     type: number
     sql: ${TABLE}.EmployeeID ;;
   }
@@ -41,14 +42,7 @@ view: employee_dimension {
     type: string
     sql: ${TABLE}.Position ;;
   }
-  filter: country_filter {
-    type: string
-    sql:
-    CASE
-      WHEN {% condition country_filter %} 'All' {% endcondition %} THEN 1=1
-      ELSE ${TABLE}.country {% condition country_filter %}{% endcondition %}
-    END ;;
-  }
+
 
 
   measure: count {
