@@ -8,6 +8,20 @@ view: employee_dimension {
     drill_fields: [state, city]
 
   }
+  dimension: country_flag_image {
+    label: "Flag"
+    type: string
+    # The SQL is just referencing the country dimension to pass its value to the HTML parameter
+    sql: ${country} ;;
+
+    # The html parameter uses Liquid to construct the <img> tag and image source URL.
+    # It replaces spaces with underscores to match common file naming conventions (e.g., "United States" -> "United_States").
+    html: |
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Flag_of_{{ value | replace: " ", "_" }}.svg/60px-Flag_of_{{ value | replace: " ", "_" }}.svg.png"
+           style="height: 25px; border: 1px solid #ccc; vertical-align: middle;"
+           alt="{{ rendered_value }} Flag">
+      ;;
+  }
 
   dimension: state {
     type: string
