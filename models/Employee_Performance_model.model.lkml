@@ -14,3 +14,18 @@ datagroup: Employee_Performance_model_default_datagroup {
 
 persist_with: Employee_Performance_model_default_datagroup
 label: "Employee Performance karthik"
+
+explore: employee_fact {
+
+  join: employee_dimension {
+    type: left_outer
+    sql_on: ${employee_fact.employee_id} = ${employee_dimension.employee_id} ;;
+    relationship: many_to_one
+  }
+
+  join: department_dimension {
+    type: left_outer
+    sql_on: ${employee_fact.department_id} = ${department_dimension.department_id} ;;
+    relationship: many_to_one
+  }
+  }
