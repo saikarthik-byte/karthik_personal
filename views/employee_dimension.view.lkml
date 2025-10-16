@@ -75,43 +75,26 @@ view: employee_dimension {
     END ;;
   }
 
-# Derived or templated field (using Liquid)
-  dimension: region_with_all {
-    sql:
-    CASE
-      WHEN {% parameter region_param %} = "All" THEN ${country}
-      ELSE {% parameter region_param %}
-    END ;;
-  }
+# Use suggest_dimension to populate all country values dynamically
 
   parameter: region_param {
     type: string
-    allowed_value: {
-      label: "All"
-      value: "All"
-    }
-    allowed_value: {
-      label: "India"
-      value: "India"
-    }
-    allowed_value: {
-      label: "USA"
-      value: "USA"
-    }
-    allowed_value: {
-      label: "UK"
-      value: "UK"
-    }
-    allowed_value: {
-      label: "China"
-      value: "China"
-    }
-    allowed_value: {
-      label: "Brazil"
-      value: "Brazil"
-    }
+    suggest_explore: employee_dimension
+    suggest_dimension: country
+    allowed_value: { label: "All" value: "All" }
     default_value: "All"
   }
+
+  # Dynamic filter dimension using liquid logic
+  dimension: region_with_all {
+    type: string
+    sql:
+      CASE
+        WHEN {% parameter region_param %} = "All" THEN ${country}
+        ELSE {% parameter region_param %}
+      END ;;
+  }
+
 
 
   measure: count {
