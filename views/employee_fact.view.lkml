@@ -33,7 +33,6 @@ view: employee_fact {
     type: number
     sql: ${TABLE}.TasksCompleted ;;
   }
-
   measure: count {
     type: count
   }

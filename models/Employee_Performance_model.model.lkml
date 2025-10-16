@@ -14,24 +14,3 @@ datagroup: Employee_Performance_model_default_datagroup {
 
 persist_with: Employee_Performance_model_default_datagroup
 label: "Employee Performance karthik"
-
-explore: employee_fact {
-  join: date_dimension {
-    type: left_outer
-    sql_on: ${employee_fact.date_key_raw}=${date_dimension.date_key_raw} ;;
-    relationship: many_to_one
-  }
-  join: employee_dimension {
-    type: left_outer
-    sql_on: ${employee_fact.employee_id}=${employee_dimension.employee_id};;
-    relationship: many_to_one
-  }
-  join: department_dimension {
-    type: left_outer
-    sql_on: ${employee_fact.department_id}=${department_dimension.department_id} ;;
-    relationship: many_to_one
-  }
-  sql_always_where: {% if employee_dimension.country_param._parameter_value != "All" %} ${employee_dimension.country} = {% parameter employee_dimension.country_param %} {% endif %} ;;
-
-
-}
