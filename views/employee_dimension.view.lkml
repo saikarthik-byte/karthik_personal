@@ -14,6 +14,7 @@ view: employee_dimension {
 
   dimension: country_filtered {
     type: string
+    map_layer_name: countries
     sql: ${TABLE}.Country ;;
   }
 
