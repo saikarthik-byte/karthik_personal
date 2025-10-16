@@ -58,6 +58,14 @@ view: employee_dimension {
     type: string
     sql: ${TABLE}.Position ;;
   }
+  dimension: country_filter {
+    type: string
+    sql: CASE
+        WHEN {% parameter selected_country %} = 'All' THEN ${employee_dimension.country}
+        ELSE ${employee_dimension.country}
+      END ;;
+  }
+
 
 
 
