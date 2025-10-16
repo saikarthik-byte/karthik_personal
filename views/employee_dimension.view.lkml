@@ -65,6 +65,15 @@ view: employee_dimension {
         ELSE ${employee_dimension.country}
       END ;;
   }
+  filter: country_filter_dashboard {
+    type: string
+    sql:
+    CASE
+      WHEN {% parameter selected_country %} = 'All' THEN 1=1
+      ELSE ${employee_dimension.country} = {% parameter selected_country %}
+    END ;;
+  }
+
 
 
 
