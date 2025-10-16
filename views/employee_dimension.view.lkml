@@ -87,6 +87,25 @@ view: employee_dimension {
       END ;;
   }
 
+  parameter: drill_level {
+    type: string
+    allowed_value: { label: "Country" value: "country" }
+    allowed_value: { label: "State" value: "state" }
+    allowed_value: { label: "City" value: "city" }
+    default_value: "country"
+  }
+
+  dimension: drilldown_location {
+    type: string
+    sql:
+      CASE
+        WHEN {% parameter drill_level %} = "country" THEN ${country}
+        WHEN {% parameter drill_level %} = "state" THEN ${state}
+        WHEN {% parameter drill_level %} = "city" THEN ${city}
+        ELSE ${country}
+      END ;;
+  }
+
   measure: count {
     type: count
     drill_fields: [employee_name]
