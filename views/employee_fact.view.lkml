@@ -34,24 +34,21 @@ view: employee_fact {
     sql: ${TABLE}.TasksCompleted ;;
   }
 
-  parameter: selected_date{
-    label: "select date"
+  parameter: selected_date {
+
+    label: "Select Date"
     type: date
-  }
-  dimension: sale_date {
-    type: date
-    sql: ${date_key_date} ;;
   }
 
-  measure: avg_sale_price_trailing_3m{
-    label: "Avg Sale Price (trailing 3 months)"
+  measure: avg_sales_trailing_3m {
     type: number
-    sql: (SELECT
-       SUM(s.sale_amount) / NULLIF(SUM(s.tasks_completed), 0)
+    sql:
+    (SELECT AVG(s.sale_amount)
      FROM ${TABLE} AS s
      WHERE s.sale_date BETWEEN DATE_SUB({% parameter selected_date %}, INTERVAL 3 MONTH)
-                           AND {% parameter selected_date %});;
+                           AND {% parameter selected_date %}) ;;
   }
+
   measure: count {
     type: count
   }
