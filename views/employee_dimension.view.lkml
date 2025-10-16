@@ -12,34 +12,25 @@ view: employee_dimension {
     sql: ${TABLE}.Country ;;
   }
 
-  dimension: country_flag {
+  dimension: country_flag_image {
+
     type: string
-    sql: CASE
-      WHEN ${country} = 'USA' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/64px-Flag_of_the_United_States.svg.png'
-      WHEN ${country} = 'India' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_India.svg/64px-Flag_of_India.svg.png'
-      WHEN ${country} = 'UK' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_Kingdom.svg/64px-Flag_of_the_United_Kingdom.svg.png'
-      WHEN ${country} = 'Canada' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Flag_of_Canada.svg/64px-Flag_of_Canada.svg.png'
-      WHEN ${country} = 'Australia' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Flag_of_Australia.svg/64px-Flag_of_Australia.svg.png'
-      WHEN ${country} = 'Germany' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/64px-Flag_of_Germany.svg.png'
-      WHEN ${country} = 'France' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/64px-Flag_of_France.svg.png'
-      WHEN ${country} = 'Italy' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Flag_of_Italy.svg/64px-Flag_of_Italy.svg.png'
-      WHEN ${country} = 'Spain' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Spain.svg/64px-Flag_of_Spain.svg.png'
-      WHEN ${country} = 'Brazil' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Flag_of_Brazil.svg/64px-Flag_of_Brazil.svg.png'
-      WHEN ${country} = 'China' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Flag_of_China.svg/64px-Flag_of_China.svg.png'
-      WHEN ${country} = 'Japan' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/64px-Flag_of_Japan.svg.png'
-      WHEN ${country} = 'South Korea' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/09/Flag_of_South_Korea.svg/64px-Flag_of_South_Korea.svg.png'
-      WHEN ${country} = 'Mexico' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Flag_of_Mexico.svg/64px-Flag_of_Mexico.svg.png'
-      WHEN ${country} = 'Argentina' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Flag_of_Argentina.svg/64px-Flag_of_Argentina.svg.png'
-      WHEN ${country} = 'Russia' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Russia.svg/64px-Flag_of_Russia.svg.png'
-      WHEN ${country} = 'South Africa' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Flag_of_South_Africa.svg/64px-Flag_of_South_Africa.svg.png'
-      WHEN ${country} = 'Egypt' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Flag_of_Egypt.svg/64px-Flag_of_Egypt.svg.png'
-      WHEN ${country} = 'Nigeria' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Flag_of_Nigeria.svg/64px-Flag_of_Nigeria.svg.png'
-      WHEN ${country} = 'Kenya' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Flag_of_Kenya.svg/64px-Flag_of_Kenya.svg.png'
-      WHEN ${country} = 'Saudi Arabia' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Flag_of_Saudi_Arabia.svg/64px-Flag_of_Saudi_Arabia.svg.png'
-      WHEN ${country} = 'United Arab Emirates' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Flag_of_the_United_Arab_Emirates.svg/64px-Flag_of_the_United_Arab_Emirates.svg.png'
-      ELSE ''
-    END ;;
-    html: "<img src='${country_flag}' width='255' height='170'>" ;;
+    sql: ${country} ;;
+    html:
+    {% if country._value == "Brazil" %}
+    <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/Flag_of_Brazil.svg" height="170" width="255">
+    {% elsif country._value == "China" %}
+    <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Flag_of_the_People%27s_Republic_of_China.svg" height="170" width="255">
+    {% elsif country._value == "India" %}
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/41/Flag_of_India.svg" height="170" width="255">
+    {% elsif country._value == "UK" %}
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/ae/Flag_of_the_United_Kingdom.svg" height="170" width="255">
+    {% elsif country._value == "USA" %}
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" height="170" width="255">
+    {% else %}
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png" height="170" width="170">
+    {% endif %}
+    ;;
   }
 
   dimension: employee_id {
