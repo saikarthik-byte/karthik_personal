@@ -1,14 +1,14 @@
 view: country_filter {
   derived_table: {
     sql:
-      SELECT DISTINCT employee_dimension.Country
-      FROM `looker-training-475011.Employee_Performance_K.Employee_fact`
+      SELECT 'All' AS Country
       UNION ALL
-      SELECT 'All' AS employee_dimension.Country ;;
+      SELECT DISTINCT Country
+      FROM `looker-training-475011.Employee_Performance_K`.`employee dimension` ;;
   }
 
   dimension: country {
-    primary_key: yes
+    type: string
     sql: ${TABLE}.Country ;;
   }
 }
