@@ -39,7 +39,7 @@ view: employee_dimension {
       WHEN ${country} = 'United Arab Emirates' THEN 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Flag_of_the_United_Arab_Emirates.svg/64px-Flag_of_the_United_Arab_Emirates.svg.png'
       ELSE ''
     END ;;
-    html: "<img src='${country_flag}' width='30' height='20'>" ;;
+    html: "<img src='${country_flag}' width='255' height='170'>" ;;
   }
 
   dimension: employee_id {
