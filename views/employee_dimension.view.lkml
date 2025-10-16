@@ -1,29 +1,31 @@
 view: employee_dimension {
   sql_table_name: `looker-training-475011.Employee_Performance_K.employee dimension` ;;
 
+  parameter: country_param {
+    type: string
+    allowed_value: { label: "All" value: "all" }
+    allowed_value: { label: "India" value: "India" }
+    allowed_value: { label: "USA" value: "USA" }
+    allowed_value: { label: "China" value: "China" }
+    allowed_value: { label: "UK" value: "UK" }
+    allowed_value: { label: "Brazil" value: "Brazil" }
+  }
+
+  dimension: country_filtered {
+    type: string
+    sql: CASE
+           WHEN {% parameter country_param %} IS NULL OR {% parameter country_param %} = 'all'
+             THEN ${TABLE}.Country
+           ELSE {% parameter country_param %}
+         END ;;
+  }
+
   dimension: country {
     type: string
     map_layer_name: countries
     sql: ${TABLE}.Country ;;
     drill_fields: [state, city]
   }
-
-  parameter: country_param {
-
-    type: string
-    allowed_value: { label: "All" value: "all" }
-  }
-  dimension: country_filtered {
-
-    type: string
-    sql: CASE
-         WHEN {% parameter country_param %} IS NULL OR {% parameter country_param %} = 'all'
-           THEN ${TABLE}.Country
-         ELSE {% parameter country_param %}
-       END ;;
-  }
-
-
 
   dimension: country_flag_image {
     label: "Flag"
