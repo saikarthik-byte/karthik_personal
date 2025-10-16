@@ -31,4 +31,9 @@ explore: employee_fact {
     sql_on: ${employee_fact.department_id}=${department_dimension.department_id} ;;
     relationship: many_to_one
   }
+  join: country_filter {
+    type: left_outer
+    sql_on: ${employee_dimension.country}=${country_filter.country} ;;
+    relationship: many_to_one
+  }
 }
