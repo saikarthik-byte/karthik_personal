@@ -75,17 +75,20 @@ view: employee_dimension {
     END ;;
   }
 
-# Use suggest_dimension to populate all country values dynamically
-
   parameter: region_param {
+
     type: string
     suggest_explore: employee_dimension
     suggest_dimension: country
-    allowed_value: { label: "All" value: "All" }
+    bypass_suggest_restrictions: yes
+    full_suggestions: yes
+    allowed_value: {
+      label: "All"
+      value: "All"
+    }
     default_value: "All"
   }
 
-  # Dynamic filter dimension using liquid logic
   dimension: region_with_all {
     type: string
     sql:
