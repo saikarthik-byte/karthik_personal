@@ -28,11 +28,5 @@ explore: employee_fact {
     sql_on: ${employee_fact.department_id} = ${department_dimension.department_id} ;;
     relationship: many_to_one
   }
-  join: consistent_employee_performance {
 
-    type: left_outer
-    sql_on: ${employee_fact.employee_id} = ${consistent_employee_performance.employee_id} ;;
-    relationship: one_to_one
-
-  }
   }
