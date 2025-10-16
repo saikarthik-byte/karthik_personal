@@ -43,9 +43,9 @@ view: employee_fact {
   measure: avg_sales_trailing_3m {
     type: number
     sql:
-    (SELECT AVG(s.sale_amount)
+    (SELECT average(${sales_amount})
      FROM ${TABLE} AS s
-     WHERE s.sale_date BETWEEN DATE_SUB({% parameter selected_date %}, INTERVAL 3 MONTH)
+     WHERE ${sales_amount} BETWEEN DATE_SUB({% parameter selected_date %}, INTERVAL 3 MONTH)
                            AND {% parameter selected_date %}) ;;
   }
 
