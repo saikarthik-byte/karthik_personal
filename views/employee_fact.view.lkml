@@ -49,18 +49,25 @@ view: employee_fact {
       END ;;
   }
 
-  measure: sales_amount_colored {
-    type: number
+  measure: total_price_colored {
+
+    type: sum
     sql: ${sales_amount} ;;
+
     html:
-    {% if value > 10000 %}
-      <span style="color:green;font-weight:bold;">${value}</span>
-    {% elsif value > 5000 %}
-      <span style="color:orange;">${value}</span>
+    {% if value <= 6880356.2 %}
+      <p style="color: black; background-color: red; font-size:100%; text-align:center">{{ rendered_value }}</p>
+    {% elsif value <= 10125146.17 %}
+      <p style="color: black; background-color: orange; font-size:100%; text-align:center">{{ rendered_value }}</p>
     {% else %}
-      <span style="color:red;">${value}</span>
-    {% endif %} ;;
+      <p style="color: black; background-color: green; font-size:100%; text-align:center">{{ rendered_value }}</p>
+    {% endif %}
+  ;;
   }
+
+
+
+
 
 
 
