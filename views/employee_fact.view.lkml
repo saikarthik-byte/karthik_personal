@@ -33,7 +33,7 @@ view: employee_fact {
     type: number
     sql: ${TABLE}.TasksCompleted ;;
   }
-  filter: country_filter {
+  dimension: country_filter {
     type: string
     sql:
     CASE
