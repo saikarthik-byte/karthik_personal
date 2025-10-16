@@ -33,14 +33,6 @@ view: employee_fact {
     type: number
     sql: ${TABLE}.TasksCompleted ;;
   }
-  dimension: country_filter {
-    type: string
-    sql:
-    CASE
-      WHEN {% condition country_filter %} 'All' {% endcondition %} THEN 1=1
-      ELSE ${TABLE}.country {% condition country_filter %}{% endcondition %}
-    END ;;
-  }
 
   measure: count {
     type: count
