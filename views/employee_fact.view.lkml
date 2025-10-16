@@ -49,6 +49,20 @@ view: employee_fact {
       END ;;
   }
 
+  measure: sales_amount_colored {
+    type: number
+    sql: ${sales_amount} ;;
+    html:
+    {% if value > 10000 %}
+      <span style="color:green;font-weight:bold;">${value}</span>
+    {% elsif value > 5000 %}
+      <span style="color:orange;">${value}</span>
+    {% else %}
+      <span style="color:red;">${value}</span>
+    {% endif %} ;;
+  }
+
+
 
   measure: count {
     type: count
