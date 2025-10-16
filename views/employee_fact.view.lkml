@@ -39,6 +39,19 @@ view: employee_fact {
     label: "Select Date"
     type: date
   }
+  parameter: selected_month {
+    type: date
+  }
+
+  measure: prev_month_cost {
+    type: sum
+    sql: CASE
+        WHEN EXTRACT(MONTH FROM ${date_key_date}) = EXTRACT(MONTH FROM {% parameter selected_month %}) - 1
+        THEN ${sales_amount}
+        ELSE NULL
+      END ;;
+  }
+
 
   measure: avg_sales_trailing_3m {
     type: number
