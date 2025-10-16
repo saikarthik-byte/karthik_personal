@@ -3,21 +3,18 @@ view: employee_dimension {
 
   parameter: country_param {
     type: string
-    allowed_value: { label: "All" value: "all" }
+    allowed_value: { label: "All" value: "All" }
     allowed_value: { label: "India" value: "India" }
     allowed_value: { label: "USA" value: "USA" }
     allowed_value: { label: "China" value: "China" }
     allowed_value: { label: "UK" value: "UK" }
     allowed_value: { label: "Brazil" value: "Brazil" }
+    default_value: "All"
   }
 
   dimension: country_filtered {
     type: string
-    sql: CASE
-           WHEN {% parameter country_param %} IS NULL OR {% parameter country_param %} = 'all'
-             THEN ${TABLE}.Country
-           ELSE {% parameter country_param %}
-         END ;;
+    sql: ${TABLE}.Country ;;
   }
 
   dimension: country {
@@ -82,4 +79,8 @@ view: employee_dimension {
     type: count
     drill_fields: [employee_name]
   }
+}
+
+explore: employee_dimension {
+  sql_always_where: {% if country_param._parameter_value != "All" %} ${employee_dimension.country} = {% parameter country_param %} {% endif %} ;;
 }
