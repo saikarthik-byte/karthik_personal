@@ -47,7 +47,7 @@ view: employee_fact {
     label: "Avg Sale Price (trailing 3 months)"
     type: number
     sql: (SELECT
-       SUM(s.sale_amount) / NULLIF(SUM(s.quantity_sold), 0)
+       SUM(s.sale_amount) / NULLIF(SUM(s.tasks_completed), 0)
      FROM ${TABLE} AS s
      WHERE s.sale_date BETWEEN DATE_SUB({% parameter selected_date %}, INTERVAL 3 MONTH)
                            AND {% parameter selected_date %});;
