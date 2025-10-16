@@ -5,12 +5,14 @@ view: employee_dimension {
     type: string
     map_layer_name: countries
     sql: ${TABLE}.Country ;;
+    drill_fields: [state, city]
 
   }
 
   dimension: state {
     type: string
     sql: ${TABLE}.State ;;
+    drill_fields: [city]
 
   }
   dimension: city {
