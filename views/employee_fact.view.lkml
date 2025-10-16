@@ -36,21 +36,25 @@ view: employee_fact {
 
   parameter: selected_date {
 
-    label: "Select Date"
     type: date
   }
+
+  measure: sale_tailing_3m{
+    type: number
+    sql:
+    AVG(CASE
+          WHEN ${date_key_date} BETWEEN DATE_SUB(CAST({% parameter selected_date %} AS DATE), INTERVAL 3 MONTH)
+                          AND CAST({% parameter selected_date %} AS DATE)
+          THEN ${sales_amount}
+          ELSE NULL
+        END) ;;
+  }
+
+
   parameter: selected_month {
     type: date
   }
 
-  measure: prev_month_cost {
-    type: sum
-    sql: CASE
-        WHEN EXTRACT(MONTH FROM ${date_key_date}) = EXTRACT(MONTH FROM {% parameter selected_month %}) - 1
-        THEN ${sales_amount}
-        ELSE NULL
-      END ;;
-  }
 
 
   measure: avg_sales_trailing_3m {
