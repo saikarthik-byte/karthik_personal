@@ -65,9 +65,16 @@ view: employee_fact {
   ;;
   }
 
-
-
-
+  measure: avg_trailing_3_month_sales {
+    type: number
+    value_format_name: "usd"
+    sql:
+      (SELECT AVG(f.sales_amount)
+       FROM `looker-training-475011.Employee_Performance_K.Employee_fact` f
+       WHERE f.DateKey BETWEEN DATE_SUB({% parameter selected_month %}, INTERVAL 3 MONTH)
+       AND {% parameter selected_month %}) ;;
+    description: "Average Sales Amount for the trailing 3 months based on the selected date."
+  }
 
 
 
