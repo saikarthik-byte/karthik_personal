@@ -65,16 +65,51 @@ view: employee_fact {
   ;;
   }
 
-  measure: avg_trailing_3_month_sales {
+  parameter: selected_date {
+    type: date
+  }
 
+  dimension: last_date_last {
+    type: date
+    sql: DATE({% parameter selected_date %}) ;;
+  }
+
+  dimension: start_date_3_months_back {
+    type: date
+    sql: DATE_SUB(DATE({% parameter selected_date %}), INTERVAL 3 MONTH) ;;
+  }
+
+  dimension: is_in_trailing_3_months {
+    type: yesno
+    sql: ${date_key_date} BETWEEN ${start_date_3_months_back} AND ${last_date_last} ;;
+  }
+
+  measure: total_sales_trailing_3_months {
+    type: sum
+    sql: ${sales_amount} ;;
+    filters:
+      {
+      field: is_in_trailing_3_months
+      value: "yes"
+      }
+
+  }
+
+  measure: total_orders_trailing_3_months {
+    type: count
+    filters:
+      {
+      field: is_in_trailing_3_months
+      value: "yes"
+      }
+
+  }
+
+  measure: avg_sales_trailing_3_months {
     type: number
+    sql: ${total_sales_trailing_3_months} / NULLIF(${total_orders_trailing_3_months}, 0) ;;
     value_format_name: "usd"
-    sql:
-    (SELECT AVG(${sales_amount})
-     FROM `looker-training-475011.Employee_Performance_K.Employee_fact` AS f
-     WHERE DATE(${date_key_date}) BETWEEN DATE_SUB(DATE({% parameter selected_month %}), INTERVAL 3 MONTH)
-     AND DATE({% parameter selected_month %})) ;;
-    description: "Average Sales Amount for the trailing 3 months based on the selected date."
+    description: "Average sale price for trailing 3 months based on selected date"
   }
 
 
