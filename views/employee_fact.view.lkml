@@ -69,8 +69,9 @@ view: employee_fact {
     type: date
   }
 
-  measure: sum_in_trailing_3_months_of_selected_date {
-    type: sum
+  measure: avg_in_trailing_3_months_of_selected_date {
+    label: "Avg sales Trailing 3 months"
+    type: average
     sql:
     CASE
       WHEN DATE(${date_key_date}) BETWEEN DATE_SUB(DATE({% parameter selected_date %}), INTERVAL 3 MONTH) AND DATE({% parameter selected_date %})
