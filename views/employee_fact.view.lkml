@@ -108,7 +108,6 @@ view: employee_fact {
   measure: avg_sales_trailing_3_months {
     type: number
     sql: ${total_sales_trailing_3_months} / NULLIF(${total_orders_trailing_3_months}, 0) ;;
-    value_format_name: "usd"
     description: "Average sale price for trailing 3 months based on selected date"
   }
 
