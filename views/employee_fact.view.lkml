@@ -69,47 +69,17 @@ view: employee_fact {
     type: date
   }
 
-  dimension: last_date_last {
-    type: date
-    sql: DATE({% parameter selected_date %}) ;;
-  }
-
-  dimension: start_date_3_months_back {
-    type: date
-    sql: DATE_SUB(DATE({% parameter selected_date %}), INTERVAL 3 MONTH) ;;
-  }
-
-  dimension: is_in_trailing_3_months {
-    type: yesno
-    sql: ${date_key_date} BETWEEN ${start_date_3_months_back} AND ${last_date_last} ;;
-  }
-
-  measure: total_sales_trailing_3_months {
+  measure: sum_in_trailing_3_months_of_selected_date {
     type: sum
-    sql: ${sales_amount} ;;
-    filters:
-      {
-      field: is_in_trailing_3_months
-      value: "yes"
-      }
-
+    sql:
+    CASE
+      WHEN DATE(${date_key_date}) BETWEEN DATE_SUB(DATE({% parameter selected_date %}), INTERVAL 3 MONTH) AND DATE({% parameter selected_date %})
+      THEN ${sales_amount}
+      ELSE 0
+    END ;;
+    description: "Sum of sales_amount if sale_date falls within the last 3 months of the selected date"
   }
 
-  measure: total_orders_trailing_3_months {
-    type: count
-    filters:
-      {
-      field: is_in_trailing_3_months
-      value: "yes"
-      }
-
-  }
-
-  measure: avg_sales_trailing_3_months {
-    type: number
-    sql: ${total_sales_trailing_3_months} / NULLIF(${total_orders_trailing_3_months}, 0) ;;
-    description: "Average sale price for trailing 3 months based on selected date"
-  }
 
 
 
