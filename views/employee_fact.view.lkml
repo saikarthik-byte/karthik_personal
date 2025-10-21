@@ -100,19 +100,21 @@ view: employee_fact {
   }
 
   measure: dynamic_metric {
+
     type: number
     sql:
     {% if metric_selector._parameter_value == 'sales' %}
-      ${sales_amount}
+      SUM(${sales_amount})
     {% elsif metric_selector._parameter_value == 'hours' %}
-      ${hours_worked}
+      SUM(${hours_worked})
     {% elsif metric_selector._parameter_value == 'score' %}
-      ${performance_score}
+      SUM(${performance_score})
     {% else %}
       NULL
     {% endif %}
     ;;
   }
+
 
 
   parameter: date_granularity {
