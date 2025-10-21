@@ -82,6 +82,7 @@ view: employee_fact {
   }
 
   parameter: metric_selector {
+
     type: unquoted
     allowed_value: {
       label: "Sales Amount"
@@ -101,13 +102,18 @@ view: employee_fact {
   measure: dynamic_metric {
     type: number
     sql:
-    CASE
-      WHEN {% parameter metric_selector %} = "sales" THEN ${sales_amount}
-      WHEN {% parameter metric_selector %} = "hours" THEN ${hours_worked}
-      WHEN {% parameter metric_selector %} = "score" THEN ${performance_score}
-      ELSE NULL
-    END ;;
+    {% if metric_selector._parameter_value == 'sales' %}
+      ${sales_amount}
+    {% elsif metric_selector._parameter_value == 'hours' %}
+      ${hours_worked}
+    {% elsif metric_selector._parameter_value == 'score' %}
+      ${performance_score}
+    {% else %}
+      NULL
+    {% endif %}
+    ;;
   }
+
 
   parameter: date_granularity {
 
