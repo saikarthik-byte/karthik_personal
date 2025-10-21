@@ -110,23 +110,37 @@ view: employee_fact {
   }
 
   parameter: date_granularity {
+
     type: unquoted
-    allowed_value: { label: "Year" value: "year" }
-    allowed_value: { label: "Month" value: "month" }
-    allowed_value: { label: "Week" value: "week" }
+    allowed_value: {
+      label: "Day"
+      value: "day"
+    }
+    allowed_value: {
+      label: "Month"
+      value: "month"
+    }
+    allowed_value: {
+      label: "Year"
+      value: "year"
+    }
     default_value: "month"
   }
 
-  dimension: dynamic_date_dimension {
-    type: date
+  dimension: dynamic_date_dim {
+    type: string
     sql:
-    CASE
-      WHEN {% parameter date_granularity %} = "year" THEN DATE_TRUNC('year', ${date_key_raw})
-      WHEN {% parameter date_granularity %} = "month" THEN DATE_TRUNC('month', ${date_key_raw})
-      WHEN {% parameter date_granularity %} = "week" THEN DATE_TRUNC('week', ${date_key_raw})
-      ELSE ${date_key_raw}
-    END ;;
+    {% if date_granularity._parameter_value == 'day' %}
+      FORMAT_DATE('%Y-%m-%d', ${date_key_date})
+    {% elsif date_granularity._parameter_value == 'month' %}
+      FORMAT_DATE('%Y-%m', ${date_key_date})
+    {% else %}
+      FORMAT_DATE('%Y', ${date_key_date})
+    {% endif %}
+    ;;
+    description: "Dynamic date dimension for Day/Month/Year granularity based on Employee Fact DateKey"
   }
+
 
 
 
