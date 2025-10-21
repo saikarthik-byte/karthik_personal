@@ -81,6 +81,37 @@ view: employee_fact {
     description: "Sum of sales_amount if sale_date falls within the last 3 months of the selected date"
   }
 
+  parameter: metric_selector {
+    type: unquoted
+    allowed_value: {
+      label: "Sales Amount"
+      value: "sales"
+    }
+    allowed_value: {
+      label: "Hours Worked"
+      value: "hours"
+    }
+    allowed_value: {
+      label: "Performance Score"
+      value: "score"
+    }
+    default_value: "sales"
+  }
+
+  measure: dynamic_metric {
+    type: number
+    sql:
+    CASE
+      WHEN {% parameter metric_selector %} = "sales" THEN ${sales_amount}
+      WHEN {% parameter metric_selector %} = "hours" THEN ${hours_worked}
+      WHEN {% parameter metric_selector %} = "score" THEN ${performance_score}
+      ELSE NULL
+    END ;;
+    value_format_name: "decimal_2"
+    description: "Dynamically switch between Sales Amount, Hours Worked, and Performance Score based on selection."
+  }
+
+
 
 
 
