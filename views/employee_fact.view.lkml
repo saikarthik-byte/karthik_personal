@@ -109,6 +109,26 @@ view: employee_fact {
     END ;;
   }
 
+  parameter: date_granularity {
+    type: unquoted
+    allowed_value: { label: "Year" value: "year" }
+    allowed_value: { label: "Month" value: "month" }
+    allowed_value: { label: "Week" value: "week" }
+    default_value: "month"
+  }
+
+  dimension: dynamic_date_dimension {
+    type: date
+    sql:
+    CASE
+      WHEN {% parameter date_granularity %} = "year" THEN DATE_TRUNC('year', ${date_key_raw})
+      WHEN {% parameter date_granularity %} = "month" THEN DATE_TRUNC('month', ${date_key_raw})
+      WHEN {% parameter date_granularity %} = "week" THEN DATE_TRUNC('week', ${date_key_raw})
+      ELSE ${date_key_raw}
+    END ;;
+  }
+
+
 
 
 
