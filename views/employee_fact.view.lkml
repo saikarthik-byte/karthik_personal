@@ -98,18 +98,18 @@ view: employee_fact {
     default_value: "sales"
   }
 
-  measure: dynamic_metric {
-    type: number
-    sql:
+ measure: dynamic_metric {
+
+  type: number
+  sql:
     CASE
       WHEN {% parameter metric_selector %} = "sales" THEN ${sales_amount}
       WHEN {% parameter metric_selector %} = "hours" THEN ${hours_worked}
       WHEN {% parameter metric_selector %} = "score" THEN ${performance_score}
       ELSE NULL
     END ;;
-    value_format_name: "decimal_2"
-    description: "Dynamically switch between Sales Amount, Hours Worked, and Performance Score based on selection."
-  }
+}
+
 
 
 
