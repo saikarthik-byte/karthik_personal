@@ -35,4 +35,10 @@ explore: employee_fact {
     relationship: many_to_one
   }
 
+  join: department_list_with_all {
+    type: left_outer
+    sql_on: department ${department_dimension.department_name}=${department_list_with_all.department_name} ;;
+    relationship: many_to_one
+  }
+
   }
