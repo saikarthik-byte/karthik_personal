@@ -26,7 +26,7 @@ view: productivity_index {
 
   measure: total_hours_worked {
     type: sum
-    sql: ${TABLE}.HoursWorked ;;
+    sql: ${TABLE}.HoursWorked;;
     value_format_name: decimal_2
   }
 
