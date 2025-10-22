@@ -32,7 +32,7 @@ explore: employee_fact {
   join: productivity_index{
     type: left_outer
     sql_on: ${employee_fact.employee_id} =${productivity_index.employee_id} ;;
-    relationship: one_to_one
+    relationship: many_to_one
   }
 
   }
