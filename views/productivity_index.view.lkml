@@ -13,11 +13,14 @@ view: productivity_index {
     sql: ${TABLE}.EmployeeID ;;
   }
 
+  dimension: department_head {
+    type: string
+    sql: ${TABLE}.DepartmentHead ;;
+  }
   dimension: department_id {
     type: number
     sql: ${TABLE}.DepartmentID ;;
   }
-
   dimension: department_name {
     type: string
     sql: ${TABLE}.DepartmentName ;;
@@ -48,7 +51,7 @@ view: productivity_index {
     sql:
       CASE
         WHEN ${total_hours_worked} = 0 THEN NULL
-        ELSE ( (${total_tasks_completed} / ${total_hours_worked}) * ${avg_performance_score} )
+        ELSE  (${total_tasks_completed} / ${total_hours_worked})
       END ;;
     value_format_name: decimal_2
   }
