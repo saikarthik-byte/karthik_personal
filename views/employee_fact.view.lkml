@@ -8,6 +8,11 @@ view: employee_fact {
     datatype: date
     sql: ${TABLE}.DateKey ;;
   }
+  dimension: Year {
+
+    type: number
+    sql: EXTRACT(YEAR FROM ${date_key_raw}) ;;
+  }
   dimension: department_id {
     type: number
     sql: ${TABLE}.DepartmentID ;;
