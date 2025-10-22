@@ -18,6 +18,11 @@ view: productivity_index {
     sql: ${TABLE}.DepartmentID ;;
   }
 
+  dimension: department_name {
+    type: string
+    sql: ${TABLE}.DepartmentName ;;
+  }
+
   # Measures
   measure: total_tasks_completed {
     type: sum
