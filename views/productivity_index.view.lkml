@@ -1,7 +1,7 @@
 view: productivity_index {
   sql_table_name: `looker-training-475011.Employee_Performance_K.Employee_fact` ;;
-# Dimensions
 
+  # Dimensions
   dimension: date_key {
     type: number
     sql: ${TABLE}.DateKey ;;
@@ -27,17 +27,24 @@ view: productivity_index {
 
   measure: total_hours_worked {
     type: sum
-    sql: ${TABLE}.HoursWorked;;
+    sql: ${TABLE}.HoursWorked ;;
+    value_format_name: decimal_2
+  }
+
+  measure: avg_performance_score {
+    type: average
+    sql: ${TABLE}.PerformanceScore ;;
     value_format_name: decimal_2
   }
 
   measure: productivity_index {
-    label: "Productivity Index"
+    label: "Weighted Productivity Index"
     type: number
-    sql: CASE
-            WHEN ${total_hours_worked} = 0 THEN NULL
-            ELSE ${total_tasks_completed} / ${total_hours_worked}
-         END ;;
+    sql:
+      CASE
+        WHEN ${total_hours_worked} = 0 THEN NULL
+        ELSE ( (${total_tasks_completed} / ${total_hours_worked}) * ${avg_performance_score} )
+      END ;;
     value_format_name: decimal_2
   }
 }
