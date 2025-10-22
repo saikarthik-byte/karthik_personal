@@ -8,6 +8,7 @@ view: productivity_index {
   }
 
   dimension: employee_id {
+    primary_key: yes
     type: number
     sql: ${TABLE}.EmployeeID ;;
   }
