@@ -29,4 +29,10 @@ explore: employee_fact {
     relationship: many_to_one
   }
 
+  join: productivity_index{
+    type: left_outer
+    sql_on: ${employee_fact.department_id} =${productivity_index.department_id} ;;
+    relationship: many_to_one
+  }
+
   }
