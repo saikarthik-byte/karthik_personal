@@ -35,14 +35,16 @@ view: department_dimension {
 
   # Dimension applies filter logic for 'All Departments' or specific department
   dimension: filtered_department_name {
+
     type: string
-    sql: |
-      CASE
-        WHEN {% parameter department_filter %} = 'all' THEN ${department_name}
-        WHEN {% parameter department_filter %} = ${department_name} THEN ${department_name}
-        ELSE NULL
-      END ;;
+    sql:
+    CASE
+      WHEN {% parameter department_filter %} = 'all' THEN ${department_name}
+      WHEN {% parameter department_filter %} = ${department_name} THEN ${department_name}
+      ELSE NULL
+    END ;;
   }
+
 
 
   measure: count {
