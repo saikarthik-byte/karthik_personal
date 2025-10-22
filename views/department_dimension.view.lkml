@@ -14,6 +14,17 @@ view: department_dimension {
     type: string
     sql: ${TABLE}.DepartmentName ;;
   }
+
+  dimension: department_name_with_all {
+    type: string
+    sql:
+      -- Union of all departments + 'All Departments'
+      (SELECT DepartmentName FROM `looker-training-475011.Employee_Performance_K.Department_dimension`)
+      UNION ALL
+      (SELECT 'All Departments')
+    ;;
+  }
+
   measure: count {
     type: count
     drill_fields: [department_name]
