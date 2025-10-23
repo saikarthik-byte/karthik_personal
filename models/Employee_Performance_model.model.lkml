@@ -17,9 +17,9 @@ label: "Employee Performance karthik"
 
 explore: employee_fact {
 
-
-
-
+  always_filter: {
+    filters: [sum_of_sales_equals_top_n_sales: "1"]
+  }
 
   join: employee_dimension {
     type: left_outer
