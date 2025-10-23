@@ -198,7 +198,7 @@ view: employee_fact {
   dimension: filter_sales_equal_top_n {
     type: yesno
     sql: SUM(${sales_amount}) - ${top_n_sales} = 0 ;;
-    hidden: yes
+
   }
 
 
