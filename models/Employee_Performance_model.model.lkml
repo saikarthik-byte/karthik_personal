@@ -17,12 +17,6 @@ label: "Employee Performance karthik"
 
 explore: employee_fact {
 
-  always_filter: {
-
-    filters: [
-      top_n_sales: "not null"
-    ]
-  }
 
 
 
