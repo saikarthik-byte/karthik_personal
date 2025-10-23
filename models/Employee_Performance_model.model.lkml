@@ -17,6 +17,13 @@ label: "Employee Performance karthik"
 
 explore: employee_fact {
 
+  always_filter: {
+    filters: [
+      top_n_sales: "-NULL"
+    ]
+  }
+
+
   join: employee_dimension {
     type: left_outer
     sql_on: ${employee_fact.employee_id} = ${employee_dimension.employee_id} ;;
