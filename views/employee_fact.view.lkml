@@ -164,7 +164,7 @@ view: employee_fact {
   measure: top_n_sales {
 
     type: number
-    sql: |
+    sql:
           SUM(
             CASE WHEN ${TABLE}.id IN (
               SELECT id FROM (
