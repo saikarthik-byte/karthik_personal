@@ -154,6 +154,23 @@ view: employee_fact {
     description: "Dynamic date dimension for Day/Month/Year granularity based on Employee Fact DateKey"
   }
 
+  parameter: top_n {
+    label: "Top N Value"
+    type: number
+    default_value: "10"
+    description: "Select how many top records to display"
+  }
+
+  measure: top_n_sales {
+    type: number
+    sql:
+    CASE WHEN RANK() OVER (ORDER BY SUM(${sales_amount}) DESC)
+         <= {% parameter top_n %} THEN SUM(${sales_amount})
+    END ;;
+  }
+
+
+
 
 
 
