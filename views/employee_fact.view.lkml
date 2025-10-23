@@ -173,7 +173,7 @@ view: employee_fact {
 
     type: number
     sql:
-    RANK() OVER (ORDER BY SUM(${sales_amount}) DESC)
+    RANK() OVER (ORDER BY ${top_n_sales}) DESC)
   ;;
   }
 
