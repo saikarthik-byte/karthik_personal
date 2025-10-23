@@ -182,8 +182,8 @@ view: employee_fact {
     type: number
     sql:
     CASE
-      WHEN SUM(${sales_amount}) = ${top_n_sales} THEN SUM(${sales_amount})
-      ELSE null
+      WHEN SUM(${sales_amount}) = ${top_n_sales} THEN 1)
+      ELSE 0
     END
   ;;
   }
