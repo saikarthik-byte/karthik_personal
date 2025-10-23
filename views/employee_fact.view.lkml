@@ -195,16 +195,11 @@ view: employee_fact {
     description: "Flag if sum_of_sales_equals_top_n_sales equals top_n_sales"
   }
 
-
-
-
-
-
-
-
-
-
-
+  dimension: filter_sales_equal_top_n {
+    type: yesno
+    sql: SUM(${sales_amount}) - ${top_n_sales} = 0 ;;
+    hidden: yes
+  }
 
 
 
