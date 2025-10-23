@@ -67,25 +67,55 @@ view: employee_dimension {
     ;;
   }
 
-  # DYNAMIC COUNTRY PARAMETER WITH ALL OPTION
+  dimension: region_filter {
+
+    sql:
+      CASE
+        WHEN ${country} IS NULL THEN 'Unknown'
+        ELSE ${country}
+      END ;;
+
+
+  }
+
+# Derived or templated field (using Liquid)
+  dimension: region_with_all {
+    sql:
+    CASE
+      WHEN {% parameter region_param %} = "All" THEN ${country}
+      ELSE {% parameter region_param %}
+    END ;;
+  }
 
   parameter: region_param {
     type: string
-    suggest_explore: employee_dimension
-    suggest_dimension: country
-    allowed_value: { label: "All" value: "All" }
+    allowed_value: {
+      label: "All"
+      value: "All"
+    }
+    allowed_value: {
+      label: "India"
+      value: "India"
+    }
+    allowed_value: {
+      label: "USA"
+      value: "USA"
+    }
+    allowed_value: {
+      label: "UK"
+      value: "UK"
+    }
+    allowed_value: {
+      label: "China"
+      value: "China"
+    }
+    allowed_value: {
+      label: "Brazil"
+      value: "Brazil"
+    }
     default_value: "All"
   }
 
-  # FILTER BASED ON PARAMETER
-  dimension: region_with_all {
-    type: string
-    sql:
-      CASE
-        WHEN {% parameter region_param %} = "All" THEN ${country}
-        ELSE {% parameter region_param %}
-      END ;;
-  }
 
   parameter: drill_level {
     type: string
