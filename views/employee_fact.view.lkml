@@ -177,6 +177,19 @@ view: employee_fact {
   ;;
   }
 
+  measure: sum_of_sales_equals_top_n_sales {
+
+    type: number
+    sql:
+    CASE
+      WHEN SUM(${sales_amount}) = ${top_n_sales} THEN SUM(${sales_amount})
+      ELSE NULL
+    END
+  ;;
+  }
+
+
+
 
 
 
