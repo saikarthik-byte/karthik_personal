@@ -162,23 +162,11 @@ view: employee_fact {
   }
 
   measure: top_n_sales {
-
     type: number
     sql:
-          SUM(
-            CASE WHEN ${TABLE}.id IN (
-              SELECT id FROM (
-                SELECT id,
-                       RANK() OVER (ORDER BY SUM(${sales_amount}) DESC) AS rnk
-                FROM ${TABLE}
-                GROUP BY id
-              ) ranked
-              WHERE ranked.rnk <= {% parameter top_n %}
-            )
-            THEN ${sales_amount}
-            ELSE NULL END
-          )
-        ;;
+    CASE WHEN RANK() OVER (ORDER BY SUM(${sales_amount}) DESC)
+         <= {% parameter top_n %} THEN SUM(${sales_amount})
+    END ;;
   }
 
 
