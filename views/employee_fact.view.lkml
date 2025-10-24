@@ -168,6 +168,13 @@ view: employee_fact {
          <= {% parameter top_n %} THEN SUM(${sales_amount})
     END ;;
   }
+  dimension: in_top_n {
+    type: yesno
+    sql: RANK() OVER (ORDER BY SUM(${sales_amount}) DESC) <= {% parameter top_n %} ;;
+    group_label: "Top N"
+    description: "True if the row is in the Top N by SUM(sales_amount)"
+  }
+
 
   measure: rank_sales {
 
@@ -177,29 +184,6 @@ view: employee_fact {
   ;;
   }
 
-  measure: sum_of_sales_equals_top_n_sales {
-
-    type: number
-    sql:
-    CASE
-      WHEN SUM(${sales_amount}) = ${top_n_sales} THEN 1
-      ELSE 0
-    END
-  ;;
-  }
-
-  dimension: sales_equal_top_n_flag {
-
-    type: yesno
-    sql: SUM(${sales_amount}) = ${top_n_sales} ;;
-    description: "Flag if sum_of_sales_equals_top_n_sales equals top_n_sales"
-  }
-
-  dimension: filter_sales_equal_top_n {
-    type: yesno
-    sql: SUM(${sales_amount}) - ${top_n_sales} = 0 ;;
-
-  }
 
 
 
