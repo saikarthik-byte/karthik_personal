@@ -175,12 +175,18 @@ view: employee_fact {
     description: "True if the row is in the Top N by SUM(sales_amount)"
   }
 
+  measure: Sum_Sales {
+    type: sum
+    sql: ${sales_amount} ;;
+  }
+
 
   measure: rank_sales {
 
     type: number
     sql: RANK() OVER (ORDER BY SUM(${sales_amount}) DESC) ;;
   }
+
 
 
 
