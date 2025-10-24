@@ -181,11 +181,7 @@ view: employee_fact {
   }
 
 
-  measure: rank_sales {
 
-    type: number
-    sql: RANK() OVER (ORDER BY ${Sum_Sales}) DESC) ;;
-  }
 
 
 
