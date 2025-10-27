@@ -26,7 +26,6 @@ view: consistent_employee_performance {
   }
 
   dimension: employee_id { type: number sql: ${TABLE}.EmployeeID ;; }
-  dimension: employee_name { type: string sql: ${TABLE}.EmployeeName ;; }
 
 
   measure: total_sales { type: sum sql: ${TABLE}.Total_Sales ;; }
