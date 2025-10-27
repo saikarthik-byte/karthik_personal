@@ -1,4 +1,4 @@
-view: department_list_with_all {
+view: department_list_with_al{
   derived_table: {
     sql:
     SELECT DepartmentName AS department_name FROM `looker-training-475011.Employee_Performance_K.Department_dimension`
@@ -7,7 +7,7 @@ view: department_list_with_all {
     ;;
   }
 
-  dimension: department_name {
+  dimension: department_Mmm {
     sql: ${TABLE}.department_name ;;
     type: string
   }
