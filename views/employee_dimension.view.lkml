@@ -67,53 +67,29 @@ view: employee_dimension {
     ;;
   }
 
-  dimension: region_filter {
-
-    sql:
-      CASE
-        WHEN ${country} IS NULL THEN 'Unknown'
-        ELSE ${country}
-      END ;;
-
-
-  }
-
-# Derived or templated field (using Liquid)
-  dimension: region_with_all {
-    sql:
-    CASE
-      WHEN {% parameter region_param %} = "All" THEN ${country}
-      ELSE {% parameter region_param %}
-    END ;;
-  }
-
   parameter: region_param {
     type: string
     allowed_value: {
       label: "All"
       value: "All"
     }
-    allowed_value: {
-      label: "India"
-      value: "India"
-    }
-    allowed_value: {
-      label: "USA"
-      value: "USA"
-    }
-    allowed_value: {
-      label: "UK"
-      value: "UK"
-    }
-    allowed_value: {
-      label: "China"
-      value: "China"
-    }
-    allowed_value: {
-      label: "Brazil"
-      value: "Brazil"
-    }
+    allowed_value: { label: "India" value: "India" }
+    allowed_value: { label: "USA" value: "USA" }
+    allowed_value: { label: "UK" value: "UK" }
+    allowed_value: { label: "China" value: "China" }
+    allowed_value: { label: "Brazil" value: "Brazil" }
     default_value: "All"
+  }
+
+  dimension: region_dynamic_filter {
+    sql:
+    CASE
+      WHEN {% parameter region_param %} = "All"
+        THEN ${country}
+      ELSE
+        {% parameter region_param %}
+    END
+  ;;
   }
 
 
