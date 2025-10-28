@@ -35,6 +35,13 @@ explore: employee_fact {
     sql_on: ${employee_fact.employee_id} =${productivity_index.employee_id} ;;
     relationship: many_to_one
   }
+  join: sql_runner_query_main {
+    type: left_outer
+    sql_on: ${employee_fact.employee_id} = ${sql_runner_query_main.employee_dimension_employee_name} ;;
+    relationship: many_to_one
+    # Adjust join condition based on keys:
+    # Join on EmployeeName may need correction to EmployeeID if available
+  }
 
 
 
