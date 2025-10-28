@@ -92,7 +92,16 @@ view: employee_dimension {
   ;;
   }
 
-
+  measure: count_by_region_param {
+    type: sum
+    sql:
+    CASE
+      WHEN {% parameter region_param %} = "All"
+        OR ${country} = {% parameter region_param %}
+      THEN 1 ELSE 0
+    END
+  ;;
+  }
 
   parameter: drill_level {
     type: string
