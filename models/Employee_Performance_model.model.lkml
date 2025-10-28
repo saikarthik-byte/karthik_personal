@@ -36,6 +36,12 @@ explore: employee_fact {
     relationship: many_to_one
   }
 
+  join: sql_runner_query {
+    type: left_outer
+    sql_on: ${employee_fact.employee_id}=${sql_runner_query.employee_dimension_employee_id} ;;
+    relationship: many_to_one
+  }
+
 
 
 
