@@ -1,9 +1,16 @@
-
 view: sql_runner_query {
+  parameter: top_n {
+    type: number
+    default_value: "5"
+    # No allowed_value items, so users can enter any integer
+  }
+
   derived_table: {
-    sql: SELECT
+    sql:
+      SELECT
         employee_dimension_employee_name,
-        employee_fact_top_n_sales
+        employee_fact_top_n_sales,
+        rank_sales
       FROM (
         SELECT
           employee_dimension.EmployeeName AS employee_dimension_employee_name,
@@ -12,17 +19,11 @@ view: sql_runner_query {
         FROM `looker-training-475011.Employee_Performance_K.Employee_fact` AS employee_fact
         LEFT JOIN `looker-training-475011.Employee_Performance_K.employee dimension` AS employee_dimension
           ON employee_fact.EmployeeID = employee_dimension.EmployeeID
-        GROUP BY
-          employee_dimension.EmployeeName
+        GROUP BY employee_dimension.EmployeeName
       )
-      WHERE rank_sales <= 5
+      WHERE rank_sales <= {% parameter top_n %}
       ORDER BY employee_fact_top_n_sales DESC
       LIMIT 500 ;;
-  }
-
-  measure: count {
-    type: count
-    drill_fields: [detail*]
   }
 
   dimension: employee_dimension_employee_name {
@@ -35,10 +36,21 @@ view: sql_runner_query {
     sql: ${TABLE}.employee_fact_top_n_sales ;;
   }
 
+  dimension: rank_sales {
+    type: number
+    sql: ${TABLE}.rank_sales ;;
+  }
+
+  measure: count {
+    type: count
+    drill_fields: [detail*]
+  }
+
   set: detail {
     fields: [
-        employee_dimension_employee_name,
-	employee_fact_top_n_sales
+      employee_dimension_employee_name,
+      employee_fact_top_n_sales,
+      rank_sales
     ]
   }
 }
