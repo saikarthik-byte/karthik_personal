@@ -1,5 +1,5 @@
-
 view: sql_runner_query_main {
+
   derived_table: {
     sql: SELECT
         employee_dimension_employee_name,
@@ -10,13 +10,14 @@ view: sql_runner_query_main {
         SELECT
           employee_dimension.EmployeeName AS employee_dimension_employee_name,
           SUM(employee_fact.SalesAmount) AS employee_fact_top_n_sales,
-          employee_dimension.EmployeeID AS employee_id
+          employee_dimension.EmployeeID AS employee_id,
           RANK() OVER (ORDER BY SUM(employee_fact.SalesAmount) DESC) AS rank_sales
         FROM `looker-training-475011.Employee_Performance_K.Employee_fact` AS employee_fact
-        LEFT JOIN `looker-training-475011.Employee_Performance_K.employee dimension` AS employee_dimension
+        LEFT JOIN `looker-training-475011.Employee_Performance_K.employee_dimension` AS employee_dimension
           ON employee_fact.EmployeeID = employee_dimension.EmployeeID
         GROUP BY
-          employee_dimension.EmployeeName
+          employee_dimension.EmployeeName,
+          employee_dimension.EmployeeID
       )
       WHERE rank_sales <= 25
       ORDER BY employee_fact_top_n_sales DESC
