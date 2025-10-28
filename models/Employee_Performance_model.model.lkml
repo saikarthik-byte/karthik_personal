@@ -35,12 +35,7 @@ explore: employee_fact {
     sql_on: ${employee_fact.employee_id} =${productivity_index.employee_id} ;;
     relationship: many_to_one
   }
-  join: sql_runner_query_main {
 
-    sql_on: ${employee_fact.employee_id} =  ${sql_runner_query_main.employee_id};;
-    relationship: many_to_one
-    type: left_outer
-  }
 
 
 
