@@ -42,6 +42,12 @@ explore: employee_fact {
     relationship: many_to_one
   }
 
+  join: employee_sales_rank {
+    type: left_outer
+    sql_on:${employee_fact.employee_id}=${employee_sales_rank.employee_id}  ;;
+    relationship: many_to_one
+  }
+
 
 
 
