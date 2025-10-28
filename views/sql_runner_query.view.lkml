@@ -13,7 +13,7 @@ view: sql_runner_query {
           ON employee_fact.EmployeeID = employee_dimension.EmployeeID
         GROUP BY employee_dimension.EmployeeID
       ) AS ranked_data
-      
+
       ORDER BY employee_fact_sum_sales_1 DESC
       LIMIT 500 ;;
   }
@@ -28,8 +28,8 @@ view: sql_runner_query {
     sql: ${TABLE}.employee_dimension_employee_id ;;
   }
 
-  dimension: employee_fact_sum_sales_1 {
-    type: number
+  measure: employee_fact_sum_sales_1 {
+    type: sum
     sql: ${TABLE}.employee_fact_sum_sales_1 ;;
   }
 
@@ -41,8 +41,8 @@ view: sql_runner_query {
   set: detail {
     fields: [
         employee_dimension_employee_id,
-	employee_fact_sum_sales_1,
-	employee_fact_rank_sales
+  employee_fact_sum_sales_1,
+  employee_fact_rank_sales
     ]
   }
 }

@@ -178,6 +178,7 @@ view: employee_fact {
   measure: Sum_Sales {
     type: sum
     sql: ${sales_amount} ;;
+
   }
 
 
