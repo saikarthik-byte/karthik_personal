@@ -1,35 +1,38 @@
-view: consistent_employee_performance {
+view: employee_sales_rank {
   derived_table: {
     sql:
       SELECT
-        e.EmployeeID,
-        e.EmployeeName,
-        d.DepartmentName,
-        SUM(f.SalesAmount) AS Total_Sales,
-        SUM(f.TasksCompleted) AS Total_Tasks,
-        SUM(f.HoursWorked) AS Total_Hours,
-        AVG(f.PerformanceScore) AS Avg_Score
-      FROM `looker-training-475011.Employee_Performance_K.employee_fact` f
-      JOIN `looker-training-475011.Employee_Performance_K.employee_dimension` e
-        ON f.EmployeeID = e.EmployeeID
-      JOIN `looker-training-475011.Employee_Performance_K.department_dimension` d
-        ON f.DepartmentID = d.DepartmentID
-      WHERE f.EmployeeID IN (
-        SELECT EmployeeID
-        FROM `looker-training-475011.Employee_Performance_K.employee_fact`
-        GROUP BY EmployeeID
-        HAVING COUNT(DISTINCT PerformanceScore) = 1
-           AND COUNT(DISTINCT DepartmentID) > 1
-      )
-      GROUP BY e.EmployeeID, e.EmployeeName, d.DepartmentName
-      ;;
+        employee_id,
+        SUM(sales_amount) AS sum_sales,
+        RANK() OVER (ORDER BY SUM(sales_amount) DESC) AS rank_sales
+      FROM employee_fact
+      GROUP BY employee_id
+    ;;
   }
 
-  dimension: employee_id { type: number sql: ${TABLE}.EmployeeID ;; }
+  dimension: employee_id {
+    primary_key: yes
+    sql: ${TABLE}.employee_id ;;
+  }
 
+  measure: sum_sales {
+    type: sum
+    sql: ${TABLE}.sum_sales ;;
+  }
 
-  measure: total_sales { type: sum sql: ${TABLE}.Total_Sales ;; }
-  measure: total_tasks { type: sum sql: ${TABLE}.Total_Tasks ;; }
-  measure: total_hours { type: sum sql: ${TABLE}.Total_Hours ;; }
-  measure: avg_score { type: average sql: ${TABLE}.Avg_Score ;; }
+  dimension: rank_sales {
+    type: number
+    sql: ${TABLE}.rank_sales ;;
+  }
+
+  # 🔽 Optional parameter for Top N filtering
+  parameter: top_n {
+    type: number
+    default_value: "10"
+  }
+
+  filter: top_n_sales {
+    type: number
+    sql: ${rank_sales} <= {% parameter top_n %} ;;
+  }
 }
