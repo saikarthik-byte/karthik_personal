@@ -30,10 +30,7 @@ view: rank_country {
     sql: ${TABLE}.employee_dimension_country ;;
   }
 
-  dimension: employee_id {
-    type: number
-    sql: ${TABLE}.employee_id ;;
-  }
+
 
   dimension: employee_fact_sum_sales_1 {
     type: number
