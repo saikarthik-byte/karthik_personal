@@ -48,6 +48,12 @@ explore: employee_fact {
     relationship: many_to_one
   }
 
+  join: rank_country {
+    type: left_outer
+    sql_on: ${employee_dimension.country}=${rank_country.employee_dimension_country} ;;
+    relationship: many_to_one
+  }
+
 
 
 
