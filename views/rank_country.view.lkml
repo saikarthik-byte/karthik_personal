@@ -30,8 +30,8 @@ view: rank_country {
     sql: ${TABLE}.employee_dimension_country ;;
   }
 
-  measures: employee_fact_sum_sales_1 {
-    type:sum
+  dimension: employee_fact_sum_sales_1 {
+    type: number
     sql: ${TABLE}.employee_fact_sum_sales_1 ;;
   }
 
