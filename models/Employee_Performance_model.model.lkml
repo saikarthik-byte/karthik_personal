@@ -50,7 +50,7 @@ explore: employee_fact {
 
   join: rank_country {
     type: left_outer
-    sql_on: ${employee_fact.employee_id}=${rank_country.employee_id};;
+    sql_on: ${employee_dimension.country}=${rank_country.employee_dimension_country} ;;
     relationship: many_to_one
   }
 
