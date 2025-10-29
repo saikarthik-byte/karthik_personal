@@ -5,7 +5,7 @@ view: rank_country {
         SELECT
             employee_dimension.Country AS employee_dimension_country,
             COALESCE(SUM(employee_fact.SalesAmount), 0) AS employee_fact_sum_sales_1,
-            RANK() OVER (ORDER BY COALESCE(SUM(employee_fact.SalesAmount), 0) DESC) AS employee_fact_rank_sales
+            RANK() OVER (ORDER BY COALESCE(SUM(employee_fact.SalesAmount), 0) DESC) AS employee_fact_rank_sales,*
         FROM `looker-training-475011.Employee_Performance_K.Employee_fact` AS employee_fact
         LEFT JOIN `looker-training-475011.Employee_Performance_K.employee dimension` AS employee_dimension
           ON employee_fact.EmployeeID = employee_dimension.EmployeeID
