@@ -41,7 +41,7 @@ view: rank_country {
     type: number
     sql: ${TABLE}.employee_fact_rank_sales ;;
   }
-
+#saiakrthik
   set: detail {
     fields: [
       employee_dimension_country,
