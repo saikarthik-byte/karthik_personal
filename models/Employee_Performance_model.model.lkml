@@ -4,8 +4,8 @@ connection: "prateek_gcp_demo"
 # Include all views
 include: "/views/**/*.view.lkml"
 
-
-
+include: "/views/employee_fact.view.lkml"
+include: "/views/refinements.view.lkml"
 
 # Datagroups define a caching policy for an Explore. To learn more,
 # use the Quick Help panel on the right to see documentation.
