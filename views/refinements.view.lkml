@@ -2,7 +2,7 @@ view: +employee_fact {
   parameter: top_n {
     label: "Top N Employees"
     type: number
-    default_value: 10
+    default_value: "10"
     description: "Show only top N employees based on total sales"
   }
 
