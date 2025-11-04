@@ -61,4 +61,4 @@ explore: employee_fact {
 
 
   }
-  explore: employee {}
+  explore: superstore{}
