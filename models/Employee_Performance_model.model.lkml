@@ -61,3 +61,4 @@ explore: employee_fact {
 
 
   }
+  explore: employee {}
