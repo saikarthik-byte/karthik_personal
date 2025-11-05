@@ -55,6 +55,11 @@ explore: employee_fact {
     sql_on: ${employee_dimension.country}=${rank_country.employee_dimension_country} ;;
     relationship: many_to_one
   }
+  join: rank_country_pdt {
+    type: left_outer
+    sql_on:${employee_fact.employee_id}=${employee_sales_rank.employee_id}  ;;
+    relationship: many_to_one
+  }
 
 
 

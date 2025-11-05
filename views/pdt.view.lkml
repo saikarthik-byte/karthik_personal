@@ -18,7 +18,7 @@ view: rank_country_pdt {
       )
       ORDER BY employee_fact_sum_sales_1 DESC ;;
 
-    persist_for: "1 hours"
+  ##persist_for: "1 hours"
 
   }
 
