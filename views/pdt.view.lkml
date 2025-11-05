@@ -19,6 +19,7 @@ view: rank_country_pdt {
       ORDER BY employee_fact_sum_sales_1 DESC ;;
 
     persist_for: "24 hours"
+
   }
 
   measure: count {
