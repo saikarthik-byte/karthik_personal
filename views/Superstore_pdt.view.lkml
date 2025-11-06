@@ -9,9 +9,9 @@ view: superstore_pdt {
         ${TABLE}."ORDER_ID" AS order_id
       FROM ${superstore.SQL_TABLE_NAME} ;;
 
-      #sql_trigger_value: SELECT MAX("SHIP_DATE") FROM ${superstore.SQL_TABLE_NAME} ;;
 
-      #persist_for: "24 hours"
+
+      persist_for: "24 hours"
     }
 
     dimension: country {
