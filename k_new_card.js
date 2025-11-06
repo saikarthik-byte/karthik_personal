@@ -32,13 +32,13 @@ looker.plugins.visualizations.add({
       section: "Style",
       label: "Positive Delta Color",
       type: "string",
-      default: "#43a047" // green
+      default: "#43a047"
     },
     delta_negative_color: {
       section: "Style",
       label: "Negative Delta Color",
       type: "string",
-      default: "#e53935" // red
+      default: "#e53935"
     },
     label_font_size: {
       section: "Style",
@@ -70,6 +70,12 @@ looker.plugins.visualizations.add({
       label: "Positive Values Are Bad",
       type: "boolean",
       default: false
+    },
+    abbreviate_main_value: {
+      section: "Formatting",
+      label: "Abbreviate Main Value",
+      type: "boolean",
+      default: true
     }
   },
   create: function (element, config) {
@@ -84,20 +90,29 @@ looker.plugins.visualizations.add({
     `;
   },
   updateAsync: function (data, element, config, queryResponse, details, done) {
-    // Main value (first measure)
+    function abbreviateNumber(num) {
+      if (!config.abbreviate_main_value) return num;
+      num = Number(num);
+      if (isNaN(num)) return num;
+      if (num >= 1e9) return (num / 1e9).toFixed(2).replace(/\.00$/, '') + 'B';
+      if (num >= 1e6) return (num / 1e6).toFixed(2).replace(/\.00$/, '') + 'M';
+      if (num >= 1e3) return (num / 1e3).toFixed(2).replace(/\.00$/, '') + 'K';
+      return num.toLocaleString();
+    }
+
+    // Fields
     const fields = queryResponse.fields.measure_like;
-    const mainValue = data[0][fields[0].name]?.rendered || data[0][fields[0].name]?.value || "";
-    // Delta (second measure, should be change %, e.g., -17.32)
+    const mainRawValue = data[0][fields[0].name]?.value || 0;
+    const mainValueFormatted = abbreviateNumber(mainRawValue);
     const change = data[0][fields[1].name]?.value || "";
     const isNegative = !config.positive_values_are_bad ? change < 0 : change > 0;
     const changeColor = isNegative ? config.delta_negative_color : config.delta_positive_color;
-    // Arrow
     const arrow = isNegative ? "▼" : "▲";
     const delta = `${arrow} ${(Math.abs(change)).toFixed(2)}%`;
 
     // Main value
     const mainDiv = element.querySelector("#kpi-main-value");
-    mainDiv.innerHTML = mainValue;
+    mainDiv.innerHTML = mainValueFormatted;
     mainDiv.style.fontSize = config.main_font_size + "px";
     mainDiv.style.color = config.main_font_color;
     mainDiv.style.fontWeight = "400";
