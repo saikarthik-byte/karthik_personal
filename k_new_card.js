@@ -1,79 +1,123 @@
 looker.plugins.visualizations.add({
-  id: "error_percent_kpi_card",
-  label: "Error % KPI Card",
+  id: "modern_kpi_card",
+  label: "Modern KPI Card",
   options: {
-    card_color: {
+    card_bg: {
       section: "Style",
-      label: "Card Background",
+      label: "Background Color",
       type: "string",
-      default: "#FF6F56" // Your sample's red-orange
+      default: "#fff"
     },
-    score_font_size: {
+    main_font_size: {
       section: "Style",
-      label: "Score Font Size (px)",
+      label: "Main Value Font Size",
       type: "number",
-      default: 36
+      default: 82,
+      min: 10, max: 200
     },
-    subtitle_font_size: {
+    main_font_color: {
       section: "Style",
-      label: "Subtitle Font Size (px)",
-      type: "number",
-      default: 18
+      label: "Main Value Font Color",
+      type: "string",
+      default: "#212121"
     },
-    percent_font_size: {
+    delta_font_size: {
       section: "Style",
-      label: "Change Font Size (px)",
+      label: "Delta Font Size",
       type: "number",
-      default: 18
+      default: 28,
+      min: 8, max: 80
+    },
+    delta_positive_color: {
+      section: "Style",
+      label: "Positive Delta Color",
+      type: "string",
+      default: "#43a047" // green
+    },
+    delta_negative_color: {
+      section: "Style",
+      label: "Negative Delta Color",
+      type: "string",
+      default: "#e53935" // red
+    },
+    label_font_size: {
+      section: "Style",
+      label: "Label Font Size",
+      type: "number",
+      default: 24,
+      min: 8, max: 60
+    },
+    label_font_color: {
+      section: "Style",
+      label: "Label Font Color",
+      type: "string",
+      default: "#444"
+    },
+    change_label: {
+      section: "Labels",
+      label: "Change Description",
+      type: "string",
+      default: "change in sales"
+    },
+    show_label: {
+      section: "Labels",
+      label: "Show Label",
+      type: "boolean",
+      default: true
+    },
+    positive_values_are_bad: {
+      section: "Comparison",
+      label: "Positive Values Are Bad",
+      type: "boolean",
+      default: false
     }
   },
-  create: function(element, config) {
+  create: function (element, config) {
     element.innerHTML = `
-      <div id="error-kpi-card" style="
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
-        height: 100%; width: 100vw; background: ${config.card_color}; font-family: sans-serif;
+      <div id="modern-kpi-container" style="
+        width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;
       ">
-        <div id="kpi-title" style="font-size:${config.subtitle_font_size}px; font-weight:bold;text-align:center;">
-          Error %
-        </div>
-        <div id="kpi-value" style="font-size:${config.score_font_size}px; font-weight:bold;text-align:center;">
-          &nbsp;
-        </div>
-        <div id="kpi-py"
-          style="font-size:${config.percent_font_size}px;text-align:center;margin-top:6px;">
-          &nbsp;
-        </div>
+        <div id="kpi-main-value"></div>
+        <div id="kpi-delta"></div>
+        <div id="kpi-label"></div>
       </div>
     `;
   },
-  updateAsync: function(data, element, config, queryResponse, details, done) {
-    // Clear errors
-    this.clearErrors();
-
-    // Replace with your actual field names
-    // e.g., data[0]["error_percent_cy"].value
+  updateAsync: function (data, element, config, queryResponse, details, done) {
+    // Main value (first measure)
     const fields = queryResponse.fields.measure_like;
-    if (fields.length < 3) {
-      this.addError({title: "Missing Data", message: "At least 3 measures required: CY, Arrow, YoY%."});
-      done();
-      return;
-    }
-    const kpiValue = data[0][fields[0].name].rendered || data[0][fields[0].name].value; // Error % CY
-    const kpiArrow = data[0][fields[1].name].rendered || data[0][fields[1].name].value; // Arrow UP/DOWN
-    const kpiChange = data[0][fields[2].name].rendered || data[0][fields[2].name].value; // CY vs PY %
+    const mainValue = data[0][fields[0].name]?.rendered || data[0][fields[0].name]?.value || "";
+    // Delta (second measure, should be change %, e.g., -17.32)
+    const change = data[0][fields[1].name]?.value || "";
+    const isNegative = !config.positive_values_are_bad ? change < 0 : change > 0;
+    const changeColor = isNegative ? config.delta_negative_color : config.delta_positive_color;
+    // Arrow
+    const arrow = isNegative ? "▼" : "▲";
+    const delta = `${arrow} ${(Math.abs(change)).toFixed(2)}%`;
 
-    const kpiValueDiv = element.querySelector("#kpi-value");
-    const kpiPYDiv = element.querySelector("#kpi-py");
-    const kpiTitle = element.querySelector("#kpi-title");
+    // Main value
+    const mainDiv = element.querySelector("#kpi-main-value");
+    mainDiv.innerHTML = mainValue;
+    mainDiv.style.fontSize = config.main_font_size + "px";
+    mainDiv.style.color = config.main_font_color;
+    mainDiv.style.fontWeight = "400";
+    mainDiv.style.letterSpacing = "1px";
+    mainDiv.style.marginBottom = "20px";
 
-    kpiValueDiv.innerText = kpiValue;
-    kpiPYDiv.innerHTML = `vs PY: ${kpiArrow} ${kpiChange}`;
+    // Delta with color
+    const deltaDiv = element.querySelector("#kpi-delta");
+    deltaDiv.innerHTML = `<span style="color:${changeColor}; font-size:${config.delta_font_size}px; font-weight:bold;">${delta}</span>`;
+    deltaDiv.style.marginBottom = "6px";
 
-    // Apply styles
-    kpiValueDiv.style.fontSize = config.score_font_size + "px";
-    kpiTitle.style.fontSize = config.subtitle_font_size + "px";
-    kpiPYDiv.style.fontSize = config.percent_font_size + "px";
-    element.querySelector("#error-kpi-card").style.background = config.card_color;
+    // Subtitle label 
+    const labelDiv = element.querySelector("#kpi-label");
+    labelDiv.style.display = config.show_label ? "block" : "none";
+    labelDiv.innerHTML = config.change_label;
+    labelDiv.style.fontSize = config.label_font_size + "px";
+    labelDiv.style.color = config.label_font_color;
+
+    // Container background
+    element.querySelector("#modern-kpi-container").style.background = config.card_bg;
 
     done();
   }
