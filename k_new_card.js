@@ -2,11 +2,43 @@ looker.plugins.visualizations.add({
   id: "modern_kpi_card",
   label: "Modern KPI Card",
   options: {
+    main_value_format: {
+      section: "Formatting",
+      label: "Main Value Format",
+      type: "string",
+      display: "select",
+      values: [
+        {"Auto": "auto"},
+        {"Thousands (K)": "k"},
+        {"Millions (M)": "m"},
+        {"Billions (B)": "b"},
+        {"None": "none"}
+      ],
+      default: "auto"
+    },
     card_bg: {
       section: "Style",
       label: "Background Color",
       type: "string",
       default: "#fff"
+    },
+    conditional_bg: {
+      section: "Style",
+      label: "Enable Conditional Background",
+      type: "boolean",
+      default: false
+    },
+    positive_bg_color: {
+      section: "Style",
+      label: "Background Color for Positive Change",
+      type: "string",
+      default: "#e0f2f1"
+    },
+    negative_bg_color: {
+      section: "Style",
+      label: "Background Color for Negative Change",
+      type: "string",
+      default: "#ffebee"
     },
     main_font_size: {
       section: "Style",
@@ -70,12 +102,6 @@ looker.plugins.visualizations.add({
       label: "Positive Values Are Bad",
       type: "boolean",
       default: false
-    },
-    abbreviate_main_value: {
-      section: "Formatting",
-      label: "Abbreviate Main Value",
-      type: "boolean",
-      default: true
     }
   },
   create: function (element, config) {
@@ -90,29 +116,42 @@ looker.plugins.visualizations.add({
     `;
   },
   updateAsync: function (data, element, config, queryResponse, details, done) {
-    function abbreviateNumber(num) {
-      if (!config.abbreviate_main_value) return num;
+    // Formatting Helper
+    function formatValue(num, mode) {
       num = Number(num);
       if (isNaN(num)) return num;
-      if (num >= 1e9) return (num / 1e9).toFixed(2).replace(/\.00$/, '') + 'B';
-      if (num >= 1e6) return (num / 1e6).toFixed(2).replace(/\.00$/, '') + 'M';
-      if (num >= 1e3) return (num / 1e3).toFixed(2).replace(/\.00$/, '') + 'K';
-      return num.toLocaleString();
+      switch(mode) {
+        case "k": return (num / 1e3).toFixed(2).replace(/\.00$/, '') + "K";
+        case "m": return (num / 1e6).toFixed(2).replace(/\.00$/, '') + "M";
+        case "b": return (num / 1e9).toFixed(2).replace(/\.00$/, '') + "B";
+        case "none": return num.toLocaleString();
+        case "auto":
+        default:
+          if (num >= 1e9) return (num / 1e9).toFixed(2).replace(/\.00$/, '') + "B";
+          if (num >= 1e6) return (num / 1e6).toFixed(2).replace(/\.00$/, '') + "M";
+          if (num >= 1e3) return (num / 1e3).toFixed(2).replace(/\.00$/, '') + "K";
+          return num.toLocaleString();
+      }
     }
 
-    // Fields
+    // Data
     const fields = queryResponse.fields.measure_like;
     const mainRawValue = data[0][fields[0].name]?.value || 0;
-    const mainValueFormatted = abbreviateNumber(mainRawValue);
-    const change = data[0][fields[1].name]?.value || "";
+    const change = data[0][fields[1].name]?.value || 0;
     const isNegative = !config.positive_values_are_bad ? change < 0 : change > 0;
     const changeColor = isNegative ? config.delta_negative_color : config.delta_positive_color;
     const arrow = isNegative ? "▼" : "▲";
     const delta = `${arrow} ${(Math.abs(change)).toFixed(2)}%`;
 
+    // Conditional background color
+    const bgColor = config.conditional_bg
+      ? (isNegative ? config.negative_bg_color : config.positive_bg_color)
+      : config.card_bg;
+    element.querySelector("#modern-kpi-container").style.background = bgColor;
+
     // Main value
     const mainDiv = element.querySelector("#kpi-main-value");
-    mainDiv.innerHTML = mainValueFormatted;
+    mainDiv.innerHTML = formatValue(mainRawValue, config.main_value_format);
     mainDiv.style.fontSize = config.main_font_size + "px";
     mainDiv.style.color = config.main_font_color;
     mainDiv.style.fontWeight = "400";
@@ -130,9 +169,6 @@ looker.plugins.visualizations.add({
     labelDiv.innerHTML = config.change_label;
     labelDiv.style.fontSize = config.label_font_size + "px";
     labelDiv.style.color = config.label_font_color;
-
-    // Container background
-    element.querySelector("#modern-kpi-container").style.background = config.card_bg;
 
     done();
   }
